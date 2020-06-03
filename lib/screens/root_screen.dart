@@ -18,14 +18,16 @@ class _RootScreenState extends State<RootScreen> {
   AuthBloc _authBloc;
 
   ///Initializes the widget, `AuthBloc`
-  ///The login is prechecked in `AuthBloc` to check if the user is already logged in
+  ///The login is prechecked in `AuthBloc` to check if the user is already logged in after the widgets have been built
   @override
   void initState() {
     super.initState();
     _authBloc = AuthBloc(
         authService: AuthService(
             facebookLogin: FacebookLogin(), localAuth: LocalAuthentication()));
-    _authBloc.add(LoginPrecheckEvent());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _authBloc.add(LoginPrecheckEvent());
+    });
   }
 
   @override

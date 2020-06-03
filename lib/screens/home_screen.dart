@@ -26,19 +26,22 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final Set<Polyline> _polyline = {};
   final Set<Marker> _markers = {};
+
   RoutesBloc _routesBloc;
   LocationBloc _locationBloc;
 
   ///Initializes the widget, `RoutesBloc` and `LocationBloc`
-  ///The current location fetching event is triggered in `LocationBloc`
-  ///The random route even is triggered in `RoutesBloc`
+  ///The current location fetching event is triggered in `LocationBloc` after the widgets have been built
+  ///The random route even is triggered in `RoutesBloc` after the widgets have been built
   @override
   void initState() {
     super.initState();
     _routesBloc = RoutesBloc(PolylinePoints());
     _locationBloc = LocationBloc();
-    _locationBloc.add(LoadMyLocationEvent());
-    _routesBloc.add(LoadRoutesEvent());
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _locationBloc.add(LoadMyLocationEvent());
+      _routesBloc.add(LoadRoutesEvent());
+    });
   }
 
   @override
