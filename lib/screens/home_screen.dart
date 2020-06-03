@@ -40,7 +40,6 @@ class _HomeScreenState extends State<HomeScreen> {
     _locationBloc = LocationBloc();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _locationBloc.add(LoadMyLocationEvent());
-      _routesBloc.add(LoadRoutesEvent());
     });
   }
 
@@ -83,7 +82,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                 );
-                print(action);
                 if (action)
                   BlocProvider.of<AuthBloc>(context).add(SignOutEvent());
               }),
@@ -131,6 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   setState(() {
                     _isLocationLoading = false;
                   });
+                  _routesBloc.add(LoadRoutesEvent());
                 } else if (state is MyLocationLoadingState) {
                   setState(() {
                     _isLocationLoading = true;
