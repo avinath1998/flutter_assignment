@@ -27,7 +27,15 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              widget.errorMsg != null ? Text(widget.errorMsg) : Container(),
+              widget.errorMsg != null
+                  ? Text(
+                      widget.errorMsg,
+                      style: Theme.of(context).textTheme.bodyText1,
+                    )
+                  : Container(),
+              SizedBox(
+                height: 10.0,
+              ),
               Text(
                 "Hi, login.",
                 style: Theme.of(context).textTheme.headline1,
@@ -83,29 +91,30 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     SizedBox(height: 30),
                     RaisedButton(
-                      shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(20.0))),
-                      color: Colors.pink,
-                      child: Container(
-                          padding: const EdgeInsets.all(17.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              FaIcon(
-                                FontAwesomeIcons.fingerprint,
-                                color: Colors.white,
-                              ),
-                              SizedBox(
-                                width: 10.0,
-                              ),
-                              Text("Login with Fingerprint",
-                                  style: TextStyle(color: Colors.white))
-                            ],
-                          )),
-                      onPressed: () => BlocProvider.of<AuthBloc>(context)
-                          .add(BiometricsLoginEvent()),
-                    ),
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20.0))),
+                        color: Colors.pink,
+                        child: Container(
+                            padding: const EdgeInsets.all(17.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                FaIcon(
+                                  FontAwesomeIcons.fingerprint,
+                                  color: Colors.white,
+                                ),
+                                SizedBox(
+                                  width: 10.0,
+                                ),
+                                Text("Login with Fingerprint",
+                                    style: TextStyle(color: Colors.white))
+                              ],
+                            )),
+                        onPressed: () {
+                          BlocProvider.of<AuthBloc>(context)
+                              .add(BiometricsLoginEvent());
+                        }),
                   ],
                 ),
               )

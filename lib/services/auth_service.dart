@@ -3,8 +3,8 @@ import 'package:assignment/models/current_user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:assignment/exceptions/authentication_exception.dart';
+import 'package:local_auth/local_auth.dart';
 
-import 'package:flutter_local_auth_invisible/flutter_local_auth_invisible.dart';
 import 'package:logger/logger.dart';
 
 import 'authable.dart';
@@ -23,7 +23,6 @@ class AuthService implements Authable {
   @override
   Future<CurrentUser> loginWithBiometrics() async {
     assert(localAuth != null);
-    logger.i("biometricating");
     if (await localAuth.canCheckBiometrics) {
       bool didAuthenticate = await localAuth.authenticateWithBiometrics(
           localizedReason: 'Login to start using this app!',

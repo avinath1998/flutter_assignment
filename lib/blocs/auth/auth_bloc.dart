@@ -4,7 +4,6 @@ import 'package:assignment/exceptions/current_user_not_found_exception.dart';
 import 'package:assignment/models/current_user.dart';
 import 'package:assignment/services/authable.dart';
 import 'package:bloc/bloc.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:logger/logger.dart';
 import 'package:meta/meta.dart';

@@ -53,10 +53,37 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         actions: <Widget>[
           FlatButton(
-            child: Icon(Icons.exit_to_app),
-            onPressed: () =>
-                BlocProvider.of<AuthBloc>(context).add(SignOutEvent()),
-          ),
+              child: Icon(Icons.exit_to_app),
+              onPressed: () async {
+                bool action = await showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    title: Text("Confirm Signout."),
+                    content: Text("Are you sure you want to signout?"),
+                    actions: <Widget>[
+                      FlatButton(
+                        color: Colors.pink,
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20.0))),
+                        child: Text(
+                          "No",
+                        ),
+                        onPressed: () => Navigator.of(context).pop(false),
+                      ),
+                      FlatButton(
+                        child: Text("Yes"),
+                        onPressed: () => Navigator.of(context).pop(true),
+                      ),
+                    ],
+                  ),
+                );
+                print(action);
+                if (action)
+                  BlocProvider.of<AuthBloc>(context).add(SignOutEvent());
+              }),
         ],
       ),
       body: Center(
@@ -83,7 +110,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   });
                   _loadMapToLocation(state.destPosition);
                 } else if (state is RoutesFailed) {
-                  _isLocationLoading = false;
+                  setState(() {
+                    _isLocationLoading = false;
+                  });
                   Scaffold.of(context).showSnackBar(SnackBar(
                     content: Text(state.routesFailedException.displayText),
                   ));
@@ -96,9 +125,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 if (state is MyLocationReadyState) {
                   //the current location will be loaded to the map view
                   _loadMapToLocation(state.position);
+                  setState(() {
+                    _isLocationLoading = false;
+                  });
                 } else if (state is MyLocationLoadingState) {
-                  //nothing needs to be shown here while the my location is loading. User should be allowed to interact with the map regardless.
+                  setState(() {
+                    _isLocationLoading = true;
+                  });
                 } else if (state is MyLocationFailedState) {
+                  setState(() {
+                    _isLocationLoading = false;
+                  });
                   Scaffold.of(context).showSnackBar(SnackBar(
                     content: Text(state.exception.displayText),
                   ));
